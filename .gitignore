@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Netlify
+.netlify/
+
+# VS Code
+.vscode/
+
+# Misc
+.DS_Store
+*.log
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log

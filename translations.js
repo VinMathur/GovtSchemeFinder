@@ -5,6 +5,7 @@ const translations = {
         locationInfoTitle: 'Location Information', 
         economicInfoTitle: 'Economic Information',
         categoryInfoTitle: 'Category Information',
+        businessEntrepreneurshipSection: 'Business & Entrepreneurship Details',
         
         labels: {
             fullName: 'Full Name',
@@ -13,7 +14,7 @@ const translations = {
             contactNumber: 'Contact Number (Optional)',
             email: 'Email Address (Optional)',
             aadhaarNumber: 'Aadhaar Number (Optional)',
-            state: 'State',
+            state: 'Select State',
             district: 'District',
             districtDefault: 'Select District (Choose State First)',
             pinCode: 'Pin Code',
@@ -22,7 +23,13 @@ const translations = {
             bplCardStatus: 'BPL Card Status',
             socialCategory: 'Social Category',
             disabilityStatus: 'Disability Status',
-            educationLevel: 'Education Level'
+            educationLevel: 'Education Level',
+            businessStatusLabel: 'Business Status',
+            businessTypeLabel: 'Business Type',
+            supportTypeLabel: 'Support Type Required',
+            investmentRangeLabel: 'Investment Range',
+            businessSectorLabel: 'Business Sector',
+            previousExperienceLabel: 'Previous Experience'
         },
         
         options: {
@@ -70,7 +77,62 @@ const translations = {
             educationLevelPostGraduate: 'Post Graduate',
             educationLevelDoctorate: 'Doctorate',
             educationLevelProfessional: 'Professional Degree',
-            educationLevelOther: 'Other'
+            educationLevelOther: 'Other',
+
+            selectBusinessStatus: 'Select Business Status',
+            planningToStart: 'Planning to Start',
+            recentlyStarted: 'Recently Started (< 1 year)',
+            existingBusiness: 'Existing Business (1+ years)',
+            lookingForExpansion: 'Looking for Expansion',
+
+            selectBusinessType: 'Select Business Type',
+            manufacturingType: 'Manufacturing',
+            serviceType: 'Service',
+            retailType: 'Retail',
+            agricultureType: 'Agriculture & Allied',
+            foodProcessingType: 'Food Processing',
+            handicraftsType: 'Handicrafts',
+            technologyType: 'Technology',
+            exportImportType: 'Export/Import',
+            otherType: 'Other',
+
+            businessLoan: 'Business Loan',
+            skillTraining: 'Skill Training',
+            marketingSupport: 'Marketing Support',
+            technologySupport: 'Technology Support',
+            equipmentPurchase: 'Equipment Purchase',
+            infrastructureSetup: 'Infrastructure Setup',
+            rawMaterialProcurement: 'Raw Material Procurement',
+            marketLinkage: 'Market Linkage',
+            digitalSkills: 'Digital Skills',
+            businessMentorship: 'Business Mentorship',
+            patentSupport: 'Patent/IP Support',
+            exportAssistance: 'Export Assistance',
+
+            selectInvestmentRange: 'Select Investment Range',
+            upTo1Lakh: 'Up to ₹1 Lakh',
+            1to5Lakh: '₹1 Lakh - ₹5 Lakh',
+            5to10Lakh: '₹5 Lakh - ₹10 Lakh',
+            10to25Lakh: '₹10 Lakh - ₹25 Lakh',
+            25LakhTo1Crore: '₹25 Lakh - ₹1 Crore',
+            above1Crore: 'Above ₹1 Crore',
+
+            selectBusinessSector: 'Select Business Sector',
+            msmeSector: 'MSME',
+            startupSector: 'Startup',
+            socialEnterpriseSector: 'Social Enterprise',
+            womenLedSector: 'Women-led Enterprise',
+            ruralEnterpriseSector: 'Rural Enterprise',
+            urbanEnterpriseSector: 'Urban Enterprise',
+            cottageIndustrySector: 'Cottage Industry',
+            selfHelpGroupSector: 'Self Help Group',
+
+            selectPreviousExperience: 'Select Previous Experience',
+            noExperience: 'No Experience',
+            lessThan1Year: 'Less than 1 year',
+            1to3Years: '1-3 years',
+            3to5Years: '3-5 years',
+            5PlusYears: '5+ years'
         },
 
         buttons: {
@@ -88,6 +150,7 @@ const translations = {
         locationInfoTitle: 'स्थान की जानकारी', 
         economicInfoTitle: 'आर्थिक जानकारी',
         categoryInfoTitle: 'श्रेणी की जानकारी',
+        businessEntrepreneurshipSection: 'व्यवसाय और उद्यमिता विवरण',
         
         labels: {
             fullName: 'पूरा नाम',
@@ -96,7 +159,7 @@ const translations = {
             contactNumber: 'संपर्क संख्या (वैकल्पिक)',
             email: 'ईमेल पता (वैकल्पिक)',
             aadhaarNumber: 'आधार संख्या (वैकल्पिक)',
-            state: 'राज्य',
+            state: 'राज्य चुनें',
             district: 'जिला',
             districtDefault: 'जिला चुनें (पहले राज्य चुनें)',
             pinCode: 'पिन कोड',
@@ -105,7 +168,13 @@ const translations = {
             bplCardStatus: 'बीपीएल कार्ड की स्थिति',
             socialCategory: 'सामाजिक श्रेणी',
             disabilityStatus: 'विकलांगता की स्थिति',
-            educationLevel: 'शिक्षा का स्तर'
+            educationLevel: 'शिक्षा का स्तर',
+            businessStatusLabel: 'व्यवसाय की स्थिति',
+            businessTypeLabel: 'व्यवसाय का प्रकार',
+            supportTypeLabel: 'आवश्यक समर्थन प्रकार',
+            investmentRangeLabel: 'निवेश श्रेणी',
+            businessSectorLabel: 'व्यवसाय क्षेत्र',
+            previousExperienceLabel: 'पिछला अनुभव'
         },
         
         options: {
@@ -153,7 +222,62 @@ const translations = {
             educationLevelPostGraduate: 'स्नातकोत्तर',
             educationLevelDoctorate: 'डॉक्टरेट',
             educationLevelProfessional: 'पेशेवर डिग्री',
-            educationLevelOther: 'अन्य'
+            educationLevelOther: 'अन्य',
+
+            selectBusinessStatus: 'व्यवसाय की स्थिति चुनें',
+            planningToStart: 'शुरू करने की योजना',
+            recentlyStarted: 'हाल ही में शुरू किया (< 1 साल)',
+            existingBusiness: 'मौजूदा व्यवसाय (1+ साल)',
+            lookingForExpansion: 'विस्तार की तलाश',
+
+            selectBusinessType: 'व्यवसाय का प्रकार चुनें',
+            manufacturingType: 'विनिर्माण',
+            serviceType: 'सेवा',
+            retailType: 'खुदरा',
+            agricultureType: 'कृषि और संबंधित',
+            foodProcessingType: 'खाद्य प्रसंस्करण',
+            handicraftsType: 'हस्तशिल्प',
+            technologyType: 'प्रौद्योगिकी',
+            exportImportType: 'निर्यात/आयात',
+            otherType: 'अन्य',
+
+            businessLoan: 'व्यावसायिक ऋण',
+            skillTraining: 'कौशल प्रशिक्षण',
+            marketingSupport: 'विपणन समर्थन',
+            technologySupport: 'प्रौद्योगिकी समर्थन',
+            equipmentPurchase: 'उपकरण खरीद',
+            infrastructureSetup: 'बुनियादी ढांचा स्थापना',
+            rawMaterialProcurement: 'कच्चे माल की खरीद',
+            marketLinkage: 'बाजार संपर्क',
+            digitalSkills: 'डिजिटल कौशल',
+            businessMentorship: 'व्यावसायिक मार्गदर्शन',
+            patentSupport: 'पेटेंट/आईपी समर्थन',
+            exportAssistance: 'निर्यात सहायता',
+
+            selectInvestmentRange: 'निवेश श्रेणी चुनें',
+            upTo1Lakh: '₹1 लाख तक',
+            1to5Lakh: '₹1 लाख - ₹5 लाख',
+            5to10Lakh: '₹5 लाख - ₹10 लाख',
+            10to25Lakh: '₹10 लाख - ₹25 लाख',
+            25LakhTo1Crore: '₹25 लाख - ₹1 करोड़',
+            above1Crore: '₹1 करोड़ से अधिक',
+
+            selectBusinessSector: 'व्यवसाय क्षेत्र चुनें',
+            msmeSector: 'एमएसएमई',
+            startupSector: 'स्टार्टअप',
+            socialEnterpriseSector: 'सामाजिक उद्यम',
+            womenLedSector: 'महिला नेतृत्व वाला उद्यम',
+            ruralEnterpriseSector: 'ग्रामीण उद्यम',
+            urbanEnterpriseSector: 'शहरी उद्यम',
+            cottageIndustrySector: 'कुटीर उद्योग',
+            selfHelpGroupSector: 'स्वयं सहायता समूह',
+
+            selectPreviousExperience: 'पिछला अनुभव चुनें',
+            noExperience: 'कोई अनुभव नहीं',
+            lessThan1Year: '1 साल से कम',
+            1to3Years: '1-3 साल',
+            3to5Years: '3-5 साल',
+            5PlusYears: '5+ साल'
         },
 
         buttons: {
@@ -178,6 +302,7 @@ function updateLanguage(lang) {
     document.getElementById('location-info-title').textContent = t.locationInfoTitle;
     document.getElementById('economic-info-title').textContent = t.economicInfoTitle;
     document.getElementById('category-info-title').textContent = t.categoryInfoTitle;
+    document.getElementById('business-entrepreneurship-section').textContent = t.businessEntrepreneurshipSection;
 
     // Update labels
     const labels = t.labels;
@@ -196,6 +321,12 @@ function updateLanguage(lang) {
     document.getElementById('social-category-label').textContent = labels.socialCategory;
     document.getElementById('disability-status-label').textContent = labels.disabilityStatus;
     document.getElementById('education-level-label').textContent = labels.educationLevel;
+    document.getElementById('business-status-label').textContent = labels.businessStatusLabel;
+    document.getElementById('business-type-label').textContent = labels.businessTypeLabel;
+    document.getElementById('support-type-label').textContent = labels.supportTypeLabel;
+    document.getElementById('investment-range-label').textContent = labels.investmentRangeLabel;
+    document.getElementById('business-sector-label').textContent = labels.businessSectorLabel;
+    document.getElementById('previous-experience-label').textContent = labels.previousExperienceLabel;
 
     // Update default options
     const options = t.options;
@@ -247,6 +378,61 @@ function updateLanguage(lang) {
     document.getElementById('education-level-doctorate').textContent = options.educationLevelDoctorate;
     document.getElementById('education-level-professional-degree').textContent = options.educationLevelProfessional;
     document.getElementById('education-level-other').textContent = options.educationLevelOther;
+
+    document.getElementById('select-business-status').textContent = options.selectBusinessStatus;
+    document.getElementById('planning-to-start').textContent = options.planningToStart;
+    document.getElementById('recently-started').textContent = options.recentlyStarted;
+    document.getElementById('existing-business').textContent = options.existingBusiness;
+    document.getElementById('looking-for-expansion').textContent = options.lookingForExpansion;
+
+    document.getElementById('select-business-type').textContent = options.selectBusinessType;
+    document.getElementById('manufacturing-type').textContent = options.manufacturingType;
+    document.getElementById('service-type').textContent = options.serviceType;
+    document.getElementById('retail-type').textContent = options.retailType;
+    document.getElementById('agriculture-type').textContent = options.agricultureType;
+    document.getElementById('food-processing-type').textContent = options.foodProcessingType;
+    document.getElementById('handicrafts-type').textContent = options.handicraftsType;
+    document.getElementById('technology-type').textContent = options.technologyType;
+    document.getElementById('export-import-type').textContent = options.exportImportType;
+    document.getElementById('other-type').textContent = options.otherType;
+
+    document.getElementById('business-loan').textContent = options.businessLoan;
+    document.getElementById('skill-training').textContent = options.skillTraining;
+    document.getElementById('marketing-support').textContent = options.marketingSupport;
+    document.getElementById('technology-support').textContent = options.technologySupport;
+    document.getElementById('equipment-purchase').textContent = options.equipmentPurchase;
+    document.getElementById('infrastructure-setup').textContent = options.infrastructureSetup;
+    document.getElementById('raw-material-procurement').textContent = options.rawMaterialProcurement;
+    document.getElementById('market-linkage').textContent = options.marketLinkage;
+    document.getElementById('digital-skills').textContent = options.digitalSkills;
+    document.getElementById('business-mentorship').textContent = options.businessMentorship;
+    document.getElementById('patent-support').textContent = options.patentSupport;
+    document.getElementById('export-assistance').textContent = options.exportAssistance;
+
+    document.getElementById('select-investment-range').textContent = options.selectInvestmentRange;
+    document.getElementById('up-to-1-lakh').textContent = options.upTo1Lakh;
+    document.getElementById('1-to-5-lakh').textContent = options.1to5Lakh;
+    document.getElementById('5-to-10-lakh').textContent = options.5to10Lakh;
+    document.getElementById('10-to-25-lakh').textContent = options.10to25Lakh;
+    document.getElementById('25-lakh-to-1-crore').textContent = options.25LakhTo1Crore;
+    document.getElementById('above-1-crore').textContent = options.above1Crore;
+
+    document.getElementById('select-business-sector').textContent = options.selectBusinessSector;
+    document.getElementById('msme-sector').textContent = options.msmeSector;
+    document.getElementById('startup-sector').textContent = options.startupSector;
+    document.getElementById('social-enterprise-sector').textContent = options.socialEnterpriseSector;
+    document.getElementById('women-led-sector').textContent = options.womenLedSector;
+    document.getElementById('rural-enterprise-sector').textContent = options.ruralEnterpriseSector;
+    document.getElementById('urban-enterprise-sector').textContent = options.urbanEnterpriseSector;
+    document.getElementById('cottage-industry-sector').textContent = options.cottageIndustrySector;
+    document.getElementById('self-help-group-sector').textContent = options.selfHelpGroupSector;
+
+    document.getElementById('select-previous-experience').textContent = options.selectPreviousExperience;
+    document.getElementById('no-experience').textContent = options.noExperience;
+    document.getElementById('less-than-1-year').textContent = options.lessThan1Year;
+    document.getElementById('1-to-3-years').textContent = options.1to3Years;
+    document.getElementById('3-to-5-years').textContent = options.3to5Years;
+    document.getElementById('5-plus-years').textContent = options.5PlusYears;
 
     // Update button
     document.getElementById('submit-button').textContent = t.buttons.submitButton;

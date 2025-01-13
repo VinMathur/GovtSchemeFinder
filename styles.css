@@ -159,23 +159,20 @@ button:hover {
 }
 
 .checkbox-group {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 15px;
-    align-items: start;
 }
 
 .checkbox-group label {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     font-size: 0.9em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     padding: 5px;
     border-radius: 4px;
     transition: background-color 0.2s;
+    margin-right: 10px;
 }
 
 .checkbox-group label:hover {

@@ -69,6 +69,9 @@ async function findSchemes(formData) {
             body: JSON.stringify(formData)
         });
 
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
         if (!response.ok) {
             // Detailed error logging
             const errorBody = await response.text();
@@ -85,12 +88,14 @@ async function findSchemes(formData) {
                     <p>Unable to fetch schemes. 
                     ${response.status === 429 ? 'Daily query limit reached. Please try again tomorrow.' : 'Please try again later.'}
                     </p>
+                    <p>Debug Info: Status ${response.status}</p>
                 </div>
             `;
             return;
         }
 
         const results = await response.json();
+        console.log('Received results:', results);
 
         // Check for rate limit error
         if (results.limit_reached) {
@@ -130,11 +135,12 @@ async function findSchemes(formData) {
             </div>
         `;
     } catch (error) {
-        console.error('Error in findSchemes:', error);
+        console.error('Catch block error in findSchemes:', error);
         document.getElementById('resultsContainer').innerHTML = `
             <div class="alert alert-danger">
                 <strong>Network Error:</strong> Unable to connect to the server. 
                 Please check your internet connection and try again.
+                <p>Error Details: ${error.message}</p>
             </div>
         `;
     }

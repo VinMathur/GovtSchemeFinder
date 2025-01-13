@@ -69,8 +69,12 @@ async function findSchemes(formData) {
             body: JSON.stringify(formData)
         });
 
-        console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        console.log('Full response details:', {
+            status: response.status,
+            statusText: response.statusText,
+            headers: Object.fromEntries(response.headers.entries()),
+            url: response.url
+        });
 
         if (!response.ok) {
             // Detailed error logging
@@ -78,17 +82,22 @@ async function findSchemes(formData) {
             console.error('Server response not OK:', {
                 status: response.status,
                 statusText: response.statusText,
-                body: errorBody
+                body: errorBody,
+                headers: Object.fromEntries(response.headers.entries())
             });
 
             // Show user-friendly error message
             document.getElementById('resultsContainer').innerHTML = `
-                <div class="rate-limit-error">
-                    <h3>Error:</h3>
-                    <p>Unable to fetch schemes. 
-                    ${response.status === 429 ? 'Daily query limit reached. Please try again tomorrow.' : 'Please try again later.'}
-                    </p>
-                    <p>Debug Info: Status ${response.status}</p>
+                <div class="error-container">
+                    <h3>Error Fetching Schemes</h3>
+                    <p>Unable to retrieve government schemes.</p>
+                    <p>Debug Information:</p>
+                    <ul>
+                        <li>Status Code: ${response.status}</li>
+                        <li>Status Text: ${response.statusText}</li>
+                        <li>Response URL: ${response.url}</li>
+                    </ul>
+                    <p>Please check your internet connection or try again later.</p>
                 </div>
             `;
             return;
@@ -135,12 +144,19 @@ async function findSchemes(formData) {
             </div>
         `;
     } catch (error) {
-        console.error('Catch block error in findSchemes:', error);
+        console.error('Comprehensive error in findSchemes:', {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+            type: typeof error
+        });
+        
         document.getElementById('resultsContainer').innerHTML = `
-            <div class="alert alert-danger">
-                <strong>Network Error:</strong> Unable to connect to the server. 
-                Please check your internet connection and try again.
+            <div class="error-container">
+                <h3>Network Error</h3>
+                <p>Unable to connect to the server.</p>
                 <p>Error Details: ${error.message}</p>
+                <p>Please check your internet connection and try again.</p>
             </div>
         `;
     }

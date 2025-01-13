@@ -97,6 +97,14 @@ def generate_scheme_prompt(user_data):
         - राज्य: {user_data.get('state', 'निर्दिष्ट नहीं')}
         - जिला: {user_data.get('district', 'निर्दिष्ट नहीं')}
         
+        व्यवसाय और उद्यमिता विवरण:
+        - व्यवसाय की स्थिति: {user_data.get('businessStatus', 'निर्दिष्ट नहीं')}
+        - व्यवसाय का प्रकार: {user_data.get('businessType', 'निर्दिष्ट नहीं')}
+        - निवेश श्रेणी: {user_data.get('investmentRange', 'निर्दिष्ट नहीं')}
+        - व्यवसाय क्षेत्र: {user_data.get('businessSector', 'निर्दिष्ट नहीं')}
+        - पिछला अनुभव: {user_data.get('previousExperience', 'निर्दिष्ट नहीं')}
+        - आवश्यक समर्थन प्रकार: {', '.join(user_data.get('supportType', [])) or 'कोई नहीं'}
+        
         कृपया इस प्रोफ़ाइल के अनुरूप सरकारी योजनाओं की एक JSON सूची प्रदान करें। प्रत्येक योजना में शामिल होना चाहिए:
         - name: योजना का नाम
         - description: योजना का संक्षिप्त विवरण
@@ -125,6 +133,14 @@ def generate_scheme_prompt(user_data):
         Location:
         - State: {user_data.get('state', 'Not specified')}
         - District: {user_data.get('district', 'Not specified')}
+        
+        Business & Entrepreneurship Details:
+        - Business Status: {user_data.get('businessStatus', 'Not specified')}
+        - Business Type: {user_data.get('businessType', 'Not specified')}
+        - Investment Range: {user_data.get('investmentRange', 'Not specified')}
+        - Business Sector: {user_data.get('businessSector', 'Not specified')}
+        - Previous Experience: {user_data.get('previousExperience', 'Not specified')}
+        - Support Types Required: {', '.join(user_data.get('supportType', [])) or 'None'}
         
         Please provide a JSON list of government schemes that match this profile. Each scheme should include:
         - name: Scheme name

@@ -6,7 +6,7 @@ document.getElementById('schemeForm').addEventListener('submit', async (e) => {
     
     // Collect form data
     const formData = {
-        fullName: document.getElementById('fullName').value.trim(),
+        fullName: document.getElementById('fullName').value,
         age: document.getElementById('age').value,
         gender: document.getElementById('gender').value,
         contactNumber: document.getElementById('contactNumber').value || null,
@@ -24,6 +24,18 @@ document.getElementById('schemeForm').addEventListener('submit', async (e) => {
         socialCategory: document.getElementById('socialCategory').value,
         disabilityStatus: document.getElementById('disabilityStatus').value,
         educationLevel: document.getElementById('educationLevel').value,
+        
+        // New Business & Entrepreneurship Fields
+        businessStatus: document.getElementById('businessStatus').value || null,
+        businessType: document.getElementById('businessType').value || null,
+        investmentRange: document.getElementById('investmentRange').value || null,
+        businessSector: document.getElementById('businessSector').value || null,
+        previousExperience: document.getElementById('previousExperience').value || null,
+        
+        // Collect multiple support types
+        supportType: Array.from(
+            document.querySelectorAll('input[name="supportType"]:checked')
+        ).map(el => el.value),
         
         language: document.getElementById('language-select').value
     };
@@ -207,7 +219,8 @@ function validateForm(data) {
     const requiredDropdowns = [
         'employmentStatus', 'bplCardStatus', 
         'socialCategory', 'disabilityStatus', 
-        'educationLevel', 'language'
+        'educationLevel', 'language',
+        'businessStatus', 'businessType', 'investmentRange', 'businessSector', 'previousExperience'
     ];
 
     requiredDropdowns.forEach(field => {

@@ -112,44 +112,88 @@ def daily_limit(f):
 
 def generate_scheme_prompt(user_data):
     """Generate a comprehensive prompt for Gemini to find relevant government schemes."""
-    # Prepare optional fields with fallback to 'Not Provided'
-    contact_number = user_data.get('contactNumber', 'Not Provided').strip() or 'Not Provided'
-    email = user_data.get('email', 'Not Provided').strip() or 'Not Provided'
-    aadhaar_number = user_data.get('aadhaarNumber', 'Not Provided').strip() or 'Not Provided'
-
-    return f"""
-    Recommend top 3-5 Indian government schemes based on these comprehensive details:
-
-    Personal Information:
-    - Age: {user_data.get('age', 'Not Provided')} years
-    - Gender: {user_data.get('gender', 'Not Provided')}
-    - Social Category: {user_data.get('socialCategory', 'Not Provided')}
-    - Disability Status: {user_data.get('disabilityStatus', 'Not Provided')}
-    - Education Level: {user_data.get('educationLevel', 'Not Provided')}
+    language = user_data.get('language', 'en')
     
-    Optional Contact Details:
-    - Contact Number: {contact_number}
-    - Email: {email}
-    - Aadhaar Number: {aadhaar_number}
-
-    Economic Information:
-    - Annual Income: ₹{user_data.get('annualIncome', 'Not Provided')}
-    - Employment Status: {user_data.get('employmentStatus', 'Not Provided')}
-    - BPL Card Status: {user_data.get('bplCardStatus', 'Not Provided')}
-
-    Location Information:
-    - State: {user_data.get('state', 'Not Provided')}
-    - District: {user_data.get('district', 'Not Provided')}
-
-    Please provide a JSON array of 3-5 government schemes that match these criteria. 
-    Each scheme object must have these keys:
-    - name: Scheme Name (string)
-    - description: Brief Description (string)
-    - eligibility: Specific Eligibility Criteria (string)
-    - applicationProcess: How to Apply (string)
-
-    Ensure the schemes are relevant and specific to the user's profile.
-    """
+    # Log the incoming user data for debugging
+    logger.info(f"Generating prompt for language: {language}")
+    logger.info(f"User Data: {json.dumps(user_data, indent=2)}")
+    
+    if language == 'hi':
+        prompt = f"""
+        निम्न प्रोफ़ाइल के लिए सबसे उपयुक्त सरकारी योजनाएँ खोजें:
+        
+        व्यक्तिगत विवरण:
+        - आयु: {user_data.get('age', 'निर्दिष्ट नहीं')}
+        - लिंग: {user_data.get('gender', 'निर्दिष्ट नहीं')}
+        - सामाजिक श्रेणी: {user_data.get('socialCategory', 'निर्दिष्ट नहीं')}
+        
+        आर्थिक विवरण:
+        - रोजगार की स्थिति: {user_data.get('employmentStatus', 'निर्दिष्ट नहीं')}
+        - बीपीएल कार्ड की स्थिति: {user_data.get('bplCardStatus', 'निर्दिष्ट नहीं')}
+        
+        अतिरिक्त जानकारी:
+        - विकलांगता की स्थिति: {user_data.get('disabilityStatus', 'निर्दिष्ट नहीं')}
+        - शिक्षा का स्तर: {user_data.get('educationLevel', 'निर्दिष्ट नहीं')}
+        
+        स्थान:
+        - राज्य: {user_data.get('state', 'निर्दिष्ट नहीं')}
+        - जिला: {user_data.get('district', 'निर्दिष्ट नहीं')}
+        
+        व्यवसाय और उद्यमिता विवरण:
+        - व्यवसाय की स्थिति: {user_data.get('businessStatus', 'निर्दिष्ट नहीं')}
+        - व्यवसाय का प्रकार: {user_data.get('businessType', 'निर्दिष्ट नहीं')}
+        - निवेश श्रेणी: {user_data.get('investmentRange', 'निर्दिष्ट नहीं')}
+        - व्यवसाय क्षेत्र: {user_data.get('businessSector', 'निर्दिष्ट नहीं')}
+        - पिछला अनुभव: {user_data.get('previousExperience', 'निर्दिष्ट नहीं')}
+        - आवश्यक समर्थन प्रकार: {', '.join(user_data.get('supportType', [])) or 'कोई नहीं'}
+        
+        कृपया इस प्रोफ़ाइल के अनुरूप सरकारी योजनाओं की एक JSON सूची प्रदान करें। प्रत्येक योजना में शामिल होना चाहिए:
+        - name: योजना का नाम
+        - description: योजना का संक्षिप्त विवरण
+        - eligibility: विशिष्ट पात्रता मानदंड
+        - applicationProcess: योजना के लिए आवेदन कैसे करें
+        
+        केवल एक वैध JSON सरणी लौटाएं। कोई अतिरिक्त पाठ या व्याख्या शामिल न करें।
+        """
+    else:  # Default to English
+        prompt = f"""
+        Find the most suitable government schemes for an individual with the following profile:
+        
+        Personal Details:
+        - Age: {user_data.get('age', 'Not specified')}
+        - Gender: {user_data.get('gender', 'Not specified')}
+        - Social Category: {user_data.get('socialCategory', 'Not specified')}
+        
+        Economic Details:
+        - Employment Status: {user_data.get('employmentStatus', 'Not specified')}
+        - BPL Card Status: {user_data.get('bplCardStatus', 'Not specified')}
+        
+        Additional Information:
+        - Disability Status: {user_data.get('disabilityStatus', 'Not specified')}
+        - Education Level: {user_data.get('educationLevel', 'Not specified')}
+        
+        Location:
+        - State: {user_data.get('state', 'Not specified')}
+        - District: {user_data.get('district', 'Not specified')}
+        
+        Business & Entrepreneurship Details:
+        - Business Status: {user_data.get('businessStatus', 'Not specified')}
+        - Business Type: {user_data.get('businessType', 'Not specified')}
+        - Investment Range: {user_data.get('investmentRange', 'Not specified')}
+        - Business Sector: {user_data.get('businessSector', 'Not specified')}
+        - Previous Experience: {user_data.get('previousExperience', 'Not specified')}
+        - Support Types Required: {', '.join(user_data.get('supportType', [])) or 'None'}
+        
+        Please provide a JSON list of government schemes that match this profile. Each scheme should include:
+        - name: Scheme name
+        - description: Brief description of the scheme
+        - eligibility: Specific eligibility criteria
+        - applicationProcess: How to apply for the scheme
+        
+        Return ONLY a valid JSON array. Do not include any additional text or explanation.
+        """
+    
+    return prompt
 
 @app.route('/')
 def index():

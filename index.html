@@ -202,7 +202,94 @@
                     </select>
                     <span id="educationLevelError" class="error-message"></span>
                 </div>
+
+                <h3 id="business-entrepreneurship-section">Business & Entrepreneurship Details</h3>
                 
+                <div class="form-group">
+                    <label id="business-status-label" for="businessStatus">Business Status</label>
+                    <select id="businessStatus" name="businessStatus">
+                        <option id="select-business-status" value="">Select Business Status</option>
+                        <option id="planning-to-start" value="planning">Planning to Start</option>
+                        <option id="recently-started" value="recently_started">Recently Started (< 1 year)</option>
+                        <option id="existing-business" value="existing">Existing Business (1+ years)</option>
+                        <option id="looking-for-expansion" value="expansion">Looking for Expansion</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label id="business-type-label" for="businessType">Business Type</label>
+                    <select id="businessType" name="businessType">
+                        <option id="select-business-type" value="">Select Business Type</option>
+                        <option id="manufacturing-type" value="manufacturing">Manufacturing</option>
+                        <option id="service-type" value="service">Service</option>
+                        <option id="retail-type" value="retail">Retail</option>
+                        <option id="agriculture-type" value="agriculture">Agriculture & Allied</option>
+                        <option id="food-processing-type" value="food_processing">Food Processing</option>
+                        <option id="handicrafts-type" value="handicrafts">Handicrafts</option>
+                        <option id="technology-type" value="technology">Technology</option>
+                        <option id="export-import-type" value="export_import">Export/Import</option>
+                        <option id="other-type" value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label id="support-type-label">Support Type Required</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="supportType" id="business-loan" value="business_loan"> Business Loan</label>
+                        <label><input type="checkbox" name="supportType" id="skill-training" value="skill_training"> Skill Training</label>
+                        <label><input type="checkbox" name="supportType" id="marketing-support" value="marketing_support"> Marketing Support</label>
+                        <label><input type="checkbox" name="supportType" id="technology-support" value="technology_support"> Technology Support</label>
+                        <label><input type="checkbox" name="supportType" id="equipment-purchase" value="equipment_purchase"> Equipment Purchase</label>
+                        <label><input type="checkbox" name="supportType" id="infrastructure-setup" value="infrastructure_setup"> Infrastructure Setup</label>
+                        <label><input type="checkbox" name="supportType" id="raw-material-procurement" value="raw_material_procurement"> Raw Material Procurement</label>
+                        <label><input type="checkbox" name="supportType" id="market-linkage" value="market_linkage"> Market Linkage</label>
+                        <label><input type="checkbox" name="supportType" id="digital-skills" value="digital_skills"> Digital Skills</label>
+                        <label><input type="checkbox" name="supportType" id="business-mentorship" value="business_mentorship"> Business Mentorship</label>
+                        <label><input type="checkbox" name="supportType" id="patent-support" value="patent_support"> Patent/IP Support</label>
+                        <label><input type="checkbox" name="supportType" id="export-assistance" value="export_assistance"> Export Assistance</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="investment-range-label" for="investmentRange">Investment Range</label>
+                    <select id="investmentRange" name="investmentRange">
+                        <option id="select-investment-range" value="">Select Investment Range</option>
+                        <option id="up-to-1-lakh" value="up_to_1_lakh">Up to ₹1 Lakh</option>
+                        <option id="1-to-5-lakh" value="1_to_5_lakh">₹1 Lakh - ₹5 Lakh</option>
+                        <option id="5-to-10-lakh" value="5_to_10_lakh">₹5 Lakh - ₹10 Lakh</option>
+                        <option id="10-to-25-lakh" value="10_to_25_lakh">₹10 Lakh - ₹25 Lakh</option>
+                        <option id="25-lakh-to-1-crore" value="25_lakh_to_1_crore">₹25 Lakh - ₹1 Crore</option>
+                        <option id="above-1-crore" value="above_1_crore">Above ₹1 Crore</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label id="business-sector-label" for="businessSector">Business Sector</label>
+                    <select id="businessSector" name="businessSector">
+                        <option id="select-business-sector" value="">Select Business Sector</option>
+                        <option id="msme-sector" value="msme">MSME</option>
+                        <option id="startup-sector" value="startup">Startup</option>
+                        <option id="social-enterprise-sector" value="social_enterprise">Social Enterprise</option>
+                        <option id="women-led-sector" value="women_led">Women-led Enterprise</option>
+                        <option id="rural-enterprise-sector" value="rural_enterprise">Rural Enterprise</option>
+                        <option id="urban-enterprise-sector" value="urban_enterprise">Urban Enterprise</option>
+                        <option id="cottage-industry-sector" value="cottage_industry">Cottage Industry</option>
+                        <option id="self-help-group-sector" value="self_help_group">Self Help Group</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label id="previous-experience-label" for="previousExperience">Previous Experience</label>
+                    <select id="previousExperience" name="previousExperience">
+                        <option id="select-previous-experience" value="">Select Previous Experience</option>
+                        <option id="no-experience" value="no_experience">No Experience</option>
+                        <option id="less-than-1-year" value="less_than_1_year">Less than 1 year</option>
+                        <option id="1-to-3-years" value="1_to_3_years">1-3 years</option>
+                        <option id="3-to-5-years" value="3_to_5_years">3-5 years</option>
+                        <option id="5-plus-years" value="5_plus_years">5+ years</option>
+                    </select>
+                </div>
+
                 <button type="submit" id="submit-button">Find Schemes</button>
             </form>
         </div>

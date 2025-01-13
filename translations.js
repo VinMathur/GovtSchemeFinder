@@ -449,3 +449,129 @@ document.getElementById('language-select').addEventListener('change', (e) => {
 
 // Initialize with default language (English)
 updateLanguage('en');
+
+// Business & Entrepreneurship Section Translations
+translations.en.businessEntrepreneurshipSection = 'Business & Entrepreneurship Details';
+translations.hi.businessEntrepreneurshipSection = 'व्यवसाय और उद्यमिता विवरण';
+
+// Business Status Translations
+translations.en.businessStatusLabel = 'Business Status';
+translations.hi.businessStatusLabel = 'व्यवसाय की स्थिति';
+translations.en.selectBusinessStatus = 'Select Business Status';
+translations.hi.selectBusinessStatus = 'व्यवसाय की स्थिति चुनें';
+translations.en.planningToStart = 'Planning to Start';
+translations.hi.planningToStart = 'शुरू करने की योजना';
+translations.en.recentlyStarted = 'Recently Started (< 1 year)';
+translations.hi.recentlyStarted = 'हाल ही में शुरू किया (< 1 वर्ष)';
+translations.en.existingBusiness = 'Existing Business (1+ years)';
+translations.hi.existingBusiness = 'मौजूदा व्यवसाय (1+ वर्ष)';
+translations.en.lookingForExpansion = 'Looking for Expansion';
+translations.hi.lookingForExpansion = 'विस्तार की तलाश';
+
+// Business Type Translations
+translations.en.businessTypeLabel = 'Business Type';
+translations.hi.businessTypeLabel = 'व्यवसाय का प्रकार';
+translations.en.selectBusinessType = 'Select Business Type';
+translations.hi.selectBusinessType = 'व्यवसाय का प्रकार चुनें';
+translations.en.manufacturingType = 'Manufacturing';
+translations.hi.manufacturingType = 'विनिर्माण';
+translations.en.serviceType = 'Service';
+translations.hi.serviceType = 'सेवा';
+translations.en.retailType = 'Retail';
+translations.hi.retailType = 'खुदरा';
+translations.en.agricultureType = 'Agriculture & Allied';
+translations.hi.agricultureType = 'कृषि और संबद्ध';
+translations.en.foodProcessingType = 'Food Processing';
+translations.hi.foodProcessingType = 'खाद्य प्रसंस्करण';
+translations.en.handicraftsType = 'Handicrafts';
+translations.hi.handicraftsType = 'हस्तशिल्प';
+translations.en.technologyType = 'Technology';
+translations.hi.technologyType = 'प्रौद्योगिकी';
+translations.en.exportImportType = 'Export/Import';
+translations.hi.exportImportType = 'निर्यात/आयात';
+translations.en.otherType = 'Other';
+translations.hi.otherType = 'अन्य';
+
+// Support Type Translations
+translations.en.supportTypeLabel = 'Support Type Required';
+translations.hi.supportTypeLabel = 'आवश्यक समर्थन प्रकार';
+translations.en.businessLoan = 'Business Loan';
+translations.hi.businessLoan = 'व्यवसाय ऋण';
+translations.en.skillTraining = 'Skill Training';
+translations.hi.skillTraining = 'कौशल प्रशिक्षण';
+translations.en.marketingSupport = 'Marketing Support';
+translations.hi.marketingSupport = 'विपणन समर्थन';
+translations.en.technologySupport = 'Technology Support';
+translations.hi.technologySupport = 'तकनीकी समर्थन';
+translations.en.equipmentPurchase = 'Equipment Purchase';
+translations.hi.equipmentPurchase = 'उपकरण खरीद';
+translations.en.infrastructureSetup = 'Infrastructure Setup';
+translations.hi.infrastructureSetup = 'बुनियादी ढांचा स्थापना';
+translations.en.rawMaterialProcurement = 'Raw Material Procurement';
+translations.hi.rawMaterialProcurement = 'कच्चे माल की खरीद';
+translations.en.marketLinkage = 'Market Linkage';
+translations.hi.marketLinkage = 'बाजार संपर्क';
+translations.en.digitalSkills = 'Digital Skills';
+translations.hi.digitalSkills = 'डिजिटल कौशल';
+translations.en.businessMentorship = 'Business Mentorship';
+translations.hi.businessMentorship = 'व्यवसाय मार्गदर्शन';
+translations.en.patentSupport = 'Patent/IP Support';
+translations.hi.patentSupport = 'पेटेंट/बौद्धिक संपदा समर्थन';
+translations.en.exportAssistance = 'Export Assistance';
+translations.hi.exportAssistance = 'निर्यात सहायता';
+
+// Investment Range Translations
+translations.en.investmentRangeLabel = 'Investment Range';
+translations.hi.investmentRangeLabel = 'निवेश सीमा';
+translations.en.selectInvestmentRange = 'Select Investment Range';
+translations.hi.selectInvestmentRange = 'निवेश सीमा चुनें';
+translations.en.upTo1Lakh = 'Up to ₹1 Lakh';
+translations.hi.upTo1Lakh = '₹1 लाख तक';
+translations.en.1to5Lakh = '₹1 Lakh - ₹5 Lakh';
+translations.hi.1to5Lakh = '₹1 लाख - ₹5 लाख';
+translations.en.5to10Lakh = '₹5 Lakh - ₹10 Lakh';
+translations.hi.5to10Lakh = '₹5 लाख - ₹10 लाख';
+translations.en.10to25Lakh = '₹10 Lakh - ₹25 Lakh';
+translations.hi.10to25Lakh = '₹10 लाख - ₹25 लाख';
+translations.en.25LakhTo1Crore = '₹25 Lakh - ₹1 Crore';
+translations.hi.25LakhTo1Crore = '₹25 लाख - ₹1 करोड़';
+translations.en.above1Crore = 'Above ₹1 Crore';
+translations.hi.above1Crore = '₹1 करोड़ से अधिक';
+
+// Business Sector Translations
+translations.en.businessSectorLabel = 'Business Sector';
+translations.hi.businessSectorLabel = 'व्यवसाय क्षेत्र';
+translations.en.selectBusinessSector = 'Select Business Sector';
+translations.hi.selectBusinessSector = 'व्यवसाय क्षेत्र चुनें';
+translations.en.msmeSector = 'MSME';
+translations.hi.msmeSector = 'एमएसएमई';
+translations.en.startupSector = 'Startup';
+translations.hi.startupSector = 'स्टार्टअप';
+translations.en.socialEnterpriseSector = 'Social Enterprise';
+translations.hi.socialEnterpriseSector = 'सामाजिक उद्यम';
+translations.en.womenLedSector = 'Women-led Enterprise';
+translations.hi.womenLedSector = 'महिला नेतृत्व वाला उद्यम';
+translations.en.ruralEnterpriseSector = 'Rural Enterprise';
+translations.hi.ruralEnterpriseSector = 'ग्रामीण उद्यम';
+translations.en.urbanEnterpriseSector = 'Urban Enterprise';
+translations.hi.urbanEnterpriseSector = 'शहरी उद्यम';
+translations.en.cottageIndustrySector = 'Cottage Industry';
+translations.hi.cottageIndustrySector = 'कुटीर उद्योग';
+translations.en.selfHelpGroupSector = 'Self Help Group';
+translations.hi.selfHelpGroupSector = 'स्वयं सहायता समूह';
+
+// Previous Experience Translations
+translations.en.previousExperienceLabel = 'Previous Experience';
+translations.hi.previousExperienceLabel = 'पिछला अनुभव';
+translations.en.selectPreviousExperience = 'Select Previous Experience';
+translations.hi.selectPreviousExperience = 'पिछला अनुभव चुनें';
+translations.en.noExperience = 'No Experience';
+translations.hi.noExperience = 'कोई अनुभव नहीं';
+translations.en.lessThan1Year = 'Less than 1 year';
+translations.hi.lessThan1Year = '1 वर्ष से कम';
+translations.en.1to3Years = '1-3 years';
+translations.hi.1to3Years = '1-3 वर्ष';
+translations.en.3to5Years = '3-5 years';
+translations.hi.3to5Years = '3-5 वर्ष';
+translations.en.5PlusYears = '5+ years';
+translations.hi.5PlusYears = '5+ वर्ष';

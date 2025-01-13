@@ -61,10 +61,18 @@ async function findSchemes(formData) {
     try {
         console.log('Sending form data:', formData);
         
-        const response = await fetch('/.netlify/functions/find-schemes', {
+        // Use relative path for local development, full URL for production
+        const netlifyFunctionUrl = window.location.hostname === 'localhost' 
+            ? '/.netlify/functions/find-schemes' 
+            : 'https://govschemes.netlify.app/.netlify/functions/find-schemes';
+        
+        console.log('Netlify Function URL:', netlifyFunctionUrl);
+        
+        const response = await fetch(netlifyFunctionUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(formData)
         });
@@ -76,73 +84,108 @@ async function findSchemes(formData) {
             url: response.url
         });
 
+        // Handle different response scenarios
         if (!response.ok) {
-            // Detailed error logging
-            const errorBody = await response.text();
-            console.error('Server response not OK:', {
-                status: response.status,
-                statusText: response.statusText,
-                body: errorBody,
-                headers: Object.fromEntries(response.headers.entries())
-            });
+            // Try to parse error response as JSON
+            try {
+                const errorBody = await response.text();
+                let errorDetails = {};
+                
+                try {
+                    errorDetails = JSON.parse(errorBody);
+                } catch (parseError) {
+                    console.warn('Could not parse error response as JSON:', parseError);
+                }
 
-            // Show user-friendly error message
+                console.error('Server response error:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    body: errorBody,
+                    parsedDetails: errorDetails
+                });
+
+                // Detailed error message for user
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="error-container">
+                        <h3>Error Fetching Schemes</h3>
+                        <p>${errorDetails.message || 'Unable to retrieve government schemes.'}</p>
+                        <p>Debug Information:</p>
+                        <ul>
+                            <li>Status Code: ${response.status}</li>
+                            <li>Status Text: ${response.statusText}</li>
+                            <li>Response URL: ${response.url}</li>
+                            <li>Error Details: ${JSON.stringify(errorDetails)}</li>
+                        </ul>
+                        <p>Possible reasons:</p>
+                        <ul>
+                            <li>Network connectivity issues</li>
+                            <li>Netlify function not deployed correctly</li>
+                            <li>API key or authentication problem</li>
+                            <li>Daily query limit exceeded</li>
+                        </ul>
+                        <p>Please check your internet connection or try again later.</p>
+                    </div>
+                `;
+                return;
+            } catch (parseError) {
+                console.error('Failed to parse error response:', parseError);
+                
+                // Fallback error message
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="error-container">
+                        <h3>Unexpected Error</h3>
+                        <p>Unable to retrieve government schemes.</p>
+                        <p>Status Code: ${response.status}</p>
+                        <p>Please try again later.</p>
+                    </div>
+                `;
+                return;
+            }
+        }
+
+        // Parse successful response
+        try {
+            const results = await response.json();
+            console.log('Received results:', results);
+
+            // Check if results is an array and has content
+            if (Array.isArray(results) && results.length > 0) {
+                // Render schemes
+                const schemesHtml = results.map(scheme => `
+                    <div class="scheme-result">
+                        <h3>${scheme.name || 'Unnamed Scheme'}</h3>
+                        <p>${scheme.description || 'No description available'}</p>
+                        ${scheme.eligibility ? `<p><strong>Eligibility:</strong> ${scheme.eligibility}</p>` : ''}
+                        ${scheme.benefits ? `<p><strong>Benefits:</strong> ${scheme.benefits}</p>` : ''}
+                        ${scheme.link ? `<a href="${scheme.link}" target="_blank" rel="noopener noreferrer">Learn More</a>` : ''}
+                    </div>
+                `).join('');
+
+                document.getElementById('resultsContainer').innerHTML = `
+                    <h2>Recommended Schemes</h2>
+                    ${schemesHtml}
+                `;
+            } else {
+                // No schemes found
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="no-results">
+                        <h3>No Schemes Found</h3>
+                        <p>We couldn't find any government schemes matching your profile.</p>
+                        <p>Try adjusting your search criteria or contact local government offices for more information.</p>
+                    </div>
+                `;
+            }
+        } catch (jsonError) {
+            console.error('Failed to parse JSON response:', jsonError);
+            
             document.getElementById('resultsContainer').innerHTML = `
                 <div class="error-container">
-                    <h3>Error Fetching Schemes</h3>
-                    <p>Unable to retrieve government schemes.</p>
-                    <p>Debug Information:</p>
-                    <ul>
-                        <li>Status Code: ${response.status}</li>
-                        <li>Status Text: ${response.statusText}</li>
-                        <li>Response URL: ${response.url}</li>
-                    </ul>
-                    <p>Please check your internet connection or try again later.</p>
+                    <h3>Data Processing Error</h3>
+                    <p>We received a response, but couldn't process the scheme information.</p>
+                    <p>Please try again later.</p>
                 </div>
             `;
-            return;
         }
-
-        const results = await response.json();
-        console.log('Received results:', results);
-
-        // Check for rate limit error
-        if (results.limit_reached) {
-            document.getElementById('resultsContainer').innerHTML = `
-                <div class="rate-limit-error">
-                    <h3>Daily Query Limit Reached</h3>
-                    <p>${results.message}</p>
-                    <p>You are allowed only 4 queries per day. Please try again tomorrow.</p>
-                </div>
-            `;
-            return;
-        }
-
-        if (!results || results.length === 0) {
-            document.getElementById('resultsContainer').innerHTML = `
-                <div class="alert alert-warning">
-                    No schemes found matching your profile. Try adjusting your details.
-                </div>
-            `;
-            return;
-        }
-
-        // Render schemes
-        const schemesHtml = results.map(scheme => `
-            <div class="scheme-result">
-                <h3>${scheme.name || 'Unnamed Scheme'}</h3>
-                <p>${scheme.description || 'No description available'}</p>
-                <p><strong>Eligibility:</strong> ${scheme.eligibility || 'Not specified'}</p>
-                ${scheme.applicationProcess ? `<p><strong>How to Apply:</strong> ${scheme.applicationProcess}</p>` : ''}
-            </div>
-        `).join('');
-
-        document.getElementById('resultsContainer').innerHTML = `
-            <div class="schemes-container">
-                <h2>Recommended Schemes</h2>
-                ${schemesHtml}
-            </div>
-        `;
     } catch (error) {
         console.error('Comprehensive error in findSchemes:', {
             name: error.name,
@@ -156,6 +199,12 @@ async function findSchemes(formData) {
                 <h3>Network Error</h3>
                 <p>Unable to connect to the server.</p>
                 <p>Error Details: ${error.message}</p>
+                <p>Possible reasons:</p>
+                <ul>
+                    <li>No internet connection</li>
+                    <li>Server is down</li>
+                    <li>Firewall or network restrictions</li>
+                </ul>
                 <p>Please check your internet connection and try again.</p>
             </div>
         `;

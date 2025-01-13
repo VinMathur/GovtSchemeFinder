@@ -157,16 +157,32 @@ def handler(event, context):
     """
     Netlify serverless function handler for finding government schemes
     """
+    # Add CORS headers to allow cross-origin requests
+    cors_headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    }
+
+    # Handle preflight OPTIONS request
+    if event.get('httpMethod') == 'OPTIONS':
+        return {
+            'statusCode': 200,
+            'headers': cors_headers,
+            'body': json.dumps({'message': 'Successful preflight call.'})
+        }
+
     # Parse the incoming request body
     try:
-        user_data = json.loads(event['body'])
+        user_data = json.loads(event.get('body', '{}'))
         logger.info(f"Received user data: {json.dumps(user_data, indent=2)}")
     except (KeyError, json.JSONDecodeError) as e:
         logger.error(f"Failed to parse request body: {e}")
         return {
             'statusCode': 400,
+            'headers': cors_headers,
             'body': json.dumps({
-                'error': 'Invalid request body',
+                'error': 'Invalid request',
                 'message': 'Could not parse the request data',
                 'details': str(e)
             })
@@ -180,8 +196,9 @@ def handler(event, context):
         logger.warning(f"Daily query limit exceeded for IP: {client_ip}")
         return {
             'statusCode': 429,
+            'headers': cors_headers,
             'body': json.dumps({
-                'error': 'Daily query limit exceeded',
+                'error': 'Rate limit exceeded',
                 'message': 'You have reached the maximum of 4 queries per day. Please try again tomorrow.',
                 'limit_reached': True
             })
@@ -215,6 +232,7 @@ def handler(event, context):
                 logger.info(f"Successfully retrieved {len(schemes)} schemes from Gemini")
                 return {
                     'statusCode': 200,
+                    'headers': cors_headers,
                     'body': json.dumps(schemes)
                 }
             
@@ -225,6 +243,7 @@ def handler(event, context):
                 # Fallback to predefined schemes
                 return {
                     'statusCode': 200,
+                    'headers': cors_headers,
                     'body': json.dumps(FALLBACK_SCHEMES)
                 }
         
@@ -232,6 +251,7 @@ def handler(event, context):
             logger.error(f"Gemini API error: {gemini_error}")
             return {
                 'statusCode': 500,
+                'headers': cors_headers,
                 'body': json.dumps({
                     'error': 'Gemini API error',
                     'details': str(gemini_error),
@@ -243,6 +263,7 @@ def handler(event, context):
         logger.error(f"Unexpected error in find-schemes: {e}")
         return {
             'statusCode': 500,
+            'headers': cors_headers,
             'body': json.dumps({
                 'error': 'Could not fetch schemes',
                 'details': str(e),

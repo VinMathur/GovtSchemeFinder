@@ -9,9 +9,9 @@ document.getElementById('schemeForm').addEventListener('submit', async (e) => {
         fullName: document.getElementById('fullName').value.trim(),
         age: document.getElementById('age').value,
         gender: document.getElementById('gender').value,
-        contactNumber: document.getElementById('contactNumber').value,
-        email: document.getElementById('email').value,
-        aadhaarNumber: document.getElementById('aadhaarNumber').value,
+        contactNumber: document.getElementById('contactNumber').value || null,
+        email: document.getElementById('email').value || null,
+        aadhaarNumber: document.getElementById('aadhaarNumber').value || null,
         
         state: document.getElementById('state').value,
         district: document.getElementById('district').value,
@@ -23,7 +23,9 @@ document.getElementById('schemeForm').addEventListener('submit', async (e) => {
         
         socialCategory: document.getElementById('socialCategory').value,
         disabilityStatus: document.getElementById('disabilityStatus').value,
-        educationLevel: document.getElementById('educationLevel').value
+        educationLevel: document.getElementById('educationLevel').value,
+        
+        language: document.getElementById('language-select').value
     };
 
     // Validation
@@ -144,7 +146,7 @@ function validateForm(data) {
     const requiredDropdowns = [
         'employmentStatus', 'bplCardStatus', 
         'socialCategory', 'disabilityStatus', 
-        'educationLevel'
+        'educationLevel', 'language'
     ];
 
     requiredDropdowns.forEach(field => {

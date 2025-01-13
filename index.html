@@ -8,57 +8,65 @@
 </head>
 <body>
     <div class="container">
+        <div class="language-selector">
+            <label for="language-select">Select Language:</label>
+            <select id="language-select">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+            </select>
+        </div>
+
         <div class="form-section">
-            <h1>Government Scheme Finder</h1>
+            <h1 id="page-title">Government Scheme Finder</h1>
             <form id="schemeForm">
-                <h2>Personal Information</h2>
+                <h2 id="personal-info-title">Personal Information</h2>
                 <div class="form-group">
-                    <label for="fullName">Full Name</label>
+                    <label for="fullName" id="full-name-label">Full Name</label>
                     <input type="text" id="fullName" name="fullName" required>
                     <span id="fullNameError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="age">Age</label>
+                    <label for="age" id="age-label">Age</label>
                     <input type="number" id="age" name="age" min="0" max="120" required>
                     <span id="ageError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="gender">Gender</label>
+                    <label for="gender" id="gender-label">Gender</label>
                     <select id="gender" name="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                        <option value="prefer_not_to_say">Prefer not to say</option>
+                        <option value="" id="gender-default">Select Gender</option>
+                        <option value="male" id="gender-male">Male</option>
+                        <option value="female" id="gender-female">Female</option>
+                        <option value="other" id="gender-other">Other</option>
+                        <option value="prefer_not_to_say" id="gender-prefer-not">Prefer not to say</option>
                     </select>
                     <span id="genderError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="contactNumber">Contact Number (Optional)</label>
+                    <label for="contactNumber" id="contact-number-label">Contact Number (Optional)</label>
                     <input type="tel" id="contactNumber" name="contactNumber" pattern="[0-9]{10}">
                     <span id="contactNumberError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email Address (Optional)</label>
+                    <label for="email" id="email-label">Email Address (Optional)</label>
                     <input type="email" id="email" name="email">
                     <span id="emailError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="aadhaarNumber">Aadhaar Number (Optional)</label>
+                    <label for="aadhaarNumber" id="aadhaar-number-label">Aadhaar Number (Optional)</label>
                     <input type="text" id="aadhaarNumber" name="aadhaarNumber" pattern="[0-9]{12}">
                     <span id="aadhaarNumberError" class="error-message"></span>
                 </div>
 
-                <h2>Location Information</h2>
+                <h2 id="location-info-title">Location Information</h2>
                 <div class="form-group">
-                    <label for="state">State</label>
+                    <label for="state" id="state-label">State</label>
                     <select id="state" name="state" required>
-                        <option value="">Select State</option>
+                        <option value="" id="state-default">Select State</option>
                         <optgroup label="States">
                             <option value="Andhra Pradesh">Andhra Pradesh</option>
                             <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -104,110 +112,111 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="district">District</label>
+                    <label for="district" id="district-label">District</label>
                     <select id="district" name="district" required disabled>
-                        <option value="">Select District (Choose State First)</option>
+                        <option value="" id="district-default">Select District (Choose State First)</option>
                     </select>
                     <span id="districtError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="pinCode">Pin Code</label>
+                    <label for="pinCode" id="pin-code-label">Pin Code</label>
                     <input type="text" id="pinCode" name="pinCode" pattern="[0-9]{6}" required>
                     <span id="pinCodeError" class="error-message"></span>
                 </div>
 
-                <h2>Economic Information</h2>
+                <h2 id="economic-info-title">Economic Information</h2>
                 <div class="form-group">
-                    <label for="annualIncome">Annual Income (₹)</label>
+                    <label for="annualIncome" id="annual-income-label">Annual Income (₹)</label>
                     <input type="number" id="annualIncome" name="annualIncome" min="0" required>
                     <span id="annualIncomeError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="employmentStatus">Employment Status</label>
+                    <label for="employmentStatus" id="employment-status-label">Employment Status</label>
                     <select id="employmentStatus" name="employmentStatus" required>
-                        <option value="">Select Employment Status</option>
-                        <option value="employed_full_time">Employed - Full Time</option>
-                        <option value="employed_part_time">Employed - Part Time</option>
-                        <option value="self_employed">Self-Employed</option>
-                        <option value="unemployed">Unemployed</option>
-                        <option value="student">Student</option>
-                        <option value="retired">Retired</option>
-                        <option value="homemaker">Homemaker</option>
-                        <option value="daily_wage_worker">Daily Wage Worker</option>
-                        <option value="farmer">Farmer</option>
-                        <option value="other">Other</option>
+                        <option value="" id="employment-status-default">Select Employment Status</option>
+                        <option value="employed_full_time" id="employment-status-full-time">Employed - Full Time</option>
+                        <option value="employed_part_time" id="employment-status-part-time">Employed - Part Time</option>
+                        <option value="self_employed" id="employment-status-self-employed">Self-Employed</option>
+                        <option value="unemployed" id="employment-status-unemployed">Unemployed</option>
+                        <option value="student" id="employment-status-student">Student</option>
+                        <option value="retired" id="employment-status-retired">Retired</option>
+                        <option value="homemaker" id="employment-status-homemaker">Homemaker</option>
+                        <option value="daily_wage_worker" id="employment-status-daily-wage-worker">Daily Wage Worker</option>
+                        <option value="farmer" id="employment-status-farmer">Farmer</option>
+                        <option value="other" id="employment-status-other">Other</option>
                     </select>
                     <span id="employmentStatusError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="bplCardStatus">BPL Card Status</label>
+                    <label for="bplCardStatus" id="bpl-card-status-label">BPL Card Status</label>
                     <select id="bplCardStatus" name="bplCardStatus" required>
-                        <option value="">Select BPL Card Status</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="" id="bpl-card-status-default">Select BPL Card Status</option>
+                        <option value="yes" id="bpl-card-status-yes">Yes</option>
+                        <option value="no" id="bpl-card-status-no">No</option>
                     </select>
                     <span id="bplCardStatusError" class="error-message"></span>
                 </div>
 
-                <h2>Category Information</h2>
+                <h2 id="category-info-title">Category Information</h2>
                 <div class="form-group">
-                    <label for="socialCategory">Social Category</label>
+                    <label for="socialCategory" id="social-category-label">Social Category</label>
                     <select id="socialCategory" name="socialCategory" required>
-                        <option value="">Select Social Category</option>
-                        <option value="general">General</option>
-                        <option value="sc">Scheduled Caste (SC)</option>
-                        <option value="st">Scheduled Tribe (ST)</option>
-                        <option value="obc">Other Backward Class (OBC)</option>
-                        <option value="ews">Economically Weaker Section (EWS)</option>
+                        <option value="" id="social-category-default">Select Social Category</option>
+                        <option value="general" id="social-category-general">General</option>
+                        <option value="sc" id="social-category-sc">Scheduled Caste (SC)</option>
+                        <option value="st" id="social-category-st">Scheduled Tribe (ST)</option>
+                        <option value="obc" id="social-category-obc">Other Backward Class (OBC)</option>
+                        <option value="ews" id="social-category-ews">Economically Weaker Section (EWS)</option>
                     </select>
                     <span id="socialCategoryError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="disabilityStatus">Disability Status</label>
+                    <label for="disabilityStatus" id="disability-status-label">Disability Status</label>
                     <select id="disabilityStatus" name="disabilityStatus" required>
-                        <option value="">Select Disability Status</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="" id="disability-status-default">Select Disability Status</option>
+                        <option value="yes" id="disability-status-yes">Yes</option>
+                        <option value="no" id="disability-status-no">No</option>
                     </select>
                     <span id="disabilityStatusError" class="error-message"></span>
                 </div>
                 
                 <div class="form-group">
-                    <label for="educationLevel">Education Level</label>
+                    <label for="educationLevel" id="education-level-label">Education Level</label>
                     <select id="educationLevel" name="educationLevel" required>
-                        <option value="">Select Education Level</option>
-                        <option value="no_formal_education">No Formal Education</option>
-                        <option value="primary_1_5">Primary Education (1-5)</option>
-                        <option value="upper_primary_6_8">Upper Primary (6-8)</option>
-                        <option value="secondary_9_10">Secondary (9-10)</option>
-                        <option value="higher_secondary_11_12">Higher Secondary (11-12)</option>
-                        <option value="diploma">Diploma</option>
-                        <option value="graduate">Graduate</option>
-                        <option value="post_graduate">Post Graduate</option>
-                        <option value="doctorate">Doctorate</option>
-                        <option value="professional_degree">Professional Degree</option>
-                        <option value="other">Other</option>
+                        <option value="" id="education-level-default">Select Education Level</option>
+                        <option value="no_formal_education" id="education-level-no-formal-education">No Formal Education</option>
+                        <option value="primary_1_5" id="education-level-primary-1-5">Primary Education (1-5)</option>
+                        <option value="upper_primary_6_8" id="education-level-upper-primary-6-8">Upper Primary (6-8)</option>
+                        <option value="secondary_9_10" id="education-level-secondary-9-10">Secondary (9-10)</option>
+                        <option value="higher_secondary_11_12" id="education-level-higher-secondary-11-12">Higher Secondary (11-12)</option>
+                        <option value="diploma" id="education-level-diploma">Diploma</option>
+                        <option value="graduate" id="education-level-graduate">Graduate</option>
+                        <option value="post_graduate" id="education-level-post-graduate">Post Graduate</option>
+                        <option value="doctorate" id="education-level-doctorate">Doctorate</option>
+                        <option value="professional_degree" id="education-level-professional-degree">Professional Degree</option>
+                        <option value="other" id="education-level-other">Other</option>
                     </select>
                     <span id="educationLevelError" class="error-message"></span>
                 </div>
                 
-                <button type="submit">Find Schemes</button>
+                <button type="submit" id="submit-button">Find Schemes</button>
             </form>
         </div>
         
         <div class="results-section">
-            <h2>Recommended Schemes</h2>
+            <h2 id="results-title">Recommended Schemes</h2>
             <div id="resultsContainer" class="results-container">
-                <p>Your recommended schemes will appear here after searching.</p>
+                <p id="results-message">Your recommended schemes will appear here after searching.</p>
             </div>
         </div>
     </div>
 
     <script src="./districts.js"></script>
+    <script src="./translations.js"></script>
     <script src="./app.js"></script>
 </body>
 </html>

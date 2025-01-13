@@ -1,14 +1,26 @@
 import json
 import os
+import logging
 import google.generativeai as genai
 from dotenv import load_dotenv
 from functools import wraps
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
 
 # Configure Gemini API
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+try:
+    gemini_api_key = os.getenv('GEMINI_API_KEY')
+    if not gemini_api_key:
+        logger.error("GEMINI_API_KEY is not set in environment variables")
+    genai.configure(api_key=gemini_api_key)
+except Exception as e:
+    logger.error(f"Failed to configure Gemini API: {e}")
 
 # In-memory storage for tracking daily queries
 daily_query_counts = {}
@@ -59,6 +71,10 @@ FALLBACK_SCHEMES = [
 def generate_scheme_prompt(user_data):
     """Generate a comprehensive prompt for Gemini to find relevant government schemes."""
     language = user_data.get('language', 'en')
+    
+    # Log the incoming user data for debugging
+    logger.info(f"Generating prompt for language: {language}")
+    logger.info(f"User Data: {json.dumps(user_data, indent=2)}")
     
     if language == 'hi':
         prompt = f"""
@@ -128,12 +144,15 @@ def handler(event, context):
     # Parse the incoming request body
     try:
         user_data = json.loads(event['body'])
-    except (KeyError, json.JSONDecodeError):
+        logger.info(f"Received user data: {json.dumps(user_data, indent=2)}")
+    except (KeyError, json.JSONDecodeError) as e:
+        logger.error(f"Failed to parse request body: {e}")
         return {
             'statusCode': 400,
             'body': json.dumps({
                 'error': 'Invalid request body',
-                'message': 'Could not parse the request data'
+                'message': 'Could not parse the request data',
+                'details': str(e)
             })
         }
     
@@ -142,6 +161,7 @@ def handler(event, context):
     
     # Check daily query limit
     if not check_daily_query_limit(client_ip):
+        logger.warning(f"Daily query limit exceeded for IP: {client_ip}")
         return {
             'statusCode': 429,
             'body': json.dumps({
@@ -153,11 +173,13 @@ def handler(event, context):
     
     try:
         # Use Gemini to generate scheme recommendations
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = generate_scheme_prompt(user_data)
         
         try:
+            logger.info(f"Sending prompt to Gemini: {prompt}")
             response = model.generate_content(prompt)
+            logger.info(f"Received Gemini response: {response.text}")
             
             # Try to parse the JSON response
             try:
@@ -174,12 +196,16 @@ def handler(event, context):
                 if not isinstance(schemes, list):
                     raise ValueError("Response is not a list of schemes")
                 
+                logger.info(f"Successfully retrieved {len(schemes)} schemes from Gemini")
                 return {
                     'statusCode': 200,
                     'body': json.dumps(schemes)
                 }
             
-            except (json.JSONDecodeError, ValueError):
+            except (json.JSONDecodeError, ValueError) as parse_error:
+                logger.warning(f"Failed to parse Gemini response: {parse_error}")
+                logger.warning(f"Raw Gemini response: {response.text}")
+                
                 # Fallback to predefined schemes
                 return {
                     'statusCode': 200,
@@ -187,6 +213,7 @@ def handler(event, context):
                 }
         
         except Exception as gemini_error:
+            logger.error(f"Gemini API error: {gemini_error}")
             return {
                 'statusCode': 500,
                 'body': json.dumps({
@@ -197,6 +224,7 @@ def handler(event, context):
             }
     
     except Exception as e:
+        logger.error(f"Unexpected error in find-schemes: {e}")
         return {
             'statusCode': 500,
             'body': json.dumps({

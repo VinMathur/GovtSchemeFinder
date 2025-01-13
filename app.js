@@ -37,13 +37,46 @@ document.getElementById('schemeForm').addEventListener('submit', async (e) => {
     }
 
     try {
+        await findSchemes(formData);
+    } catch (error) {
+        console.error('Error fetching schemes:', error);
+        document.getElementById('resultsContainer').innerHTML = 
+            '<p class="error">Error fetching schemes. Please try again later.</p>';
+    }
+});
+
+async function findSchemes(formData) {
+    try {
+        console.log('Sending form data:', formData);
+        
         const response = await fetch('/.netlify/functions/find-schemes', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(formData)
         });
+
+        if (!response.ok) {
+            // Detailed error logging
+            const errorBody = await response.text();
+            console.error('Server response not OK:', {
+                status: response.status,
+                statusText: response.statusText,
+                body: errorBody
+            });
+
+            // Show user-friendly error message
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="rate-limit-error">
+                    <h3>Error:</h3>
+                    <p>Unable to fetch schemes. 
+                    ${response.status === 429 ? 'Daily query limit reached. Please try again tomorrow.' : 'Please try again later.'}
+                    </p>
+                </div>
+            `;
+            return;
+        }
 
         const results = await response.json();
 
@@ -59,13 +92,41 @@ document.getElementById('schemeForm').addEventListener('submit', async (e) => {
             return;
         }
 
-        displayResults(results);
+        if (!results || results.length === 0) {
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="alert alert-warning">
+                    No schemes found matching your profile. Try adjusting your details.
+                </div>
+            `;
+            return;
+        }
+
+        // Render schemes
+        const schemesHtml = results.map(scheme => `
+            <div class="scheme-result">
+                <h3>${scheme.name || 'Unnamed Scheme'}</h3>
+                <p>${scheme.description || 'No description available'}</p>
+                <p><strong>Eligibility:</strong> ${scheme.eligibility || 'Not specified'}</p>
+                ${scheme.applicationProcess ? `<p><strong>How to Apply:</strong> ${scheme.applicationProcess}</p>` : ''}
+            </div>
+        `).join('');
+
+        document.getElementById('resultsContainer').innerHTML = `
+            <div class="schemes-container">
+                <h2>Recommended Schemes</h2>
+                ${schemesHtml}
+            </div>
+        `;
     } catch (error) {
-        console.error('Error fetching schemes:', error);
-        document.getElementById('resultsContainer').innerHTML = 
-            '<p class="error">Error fetching schemes. Please try again later.</p>';
+        console.error('Error in findSchemes:', error);
+        document.getElementById('resultsContainer').innerHTML = `
+            <div class="alert alert-danger">
+                <strong>Network Error:</strong> Unable to connect to the server. 
+                Please check your internet connection and try again.
+            </div>
+        `;
     }
-});
+}
 
 function validateForm(data) {
     const errors = {};
@@ -186,22 +247,4 @@ function clearErrors() {
     errorInputs.forEach(input => {
         input.classList.remove('error-input');
     });
-}
-
-function displayResults(schemes) {
-    const resultsContainer = document.getElementById('resultsContainer');
-    
-    if (!schemes || schemes.length === 0) {
-        resultsContainer.innerHTML = '<p>No matching schemes found.</p>';
-        return;
-    }
-
-    resultsContainer.innerHTML = schemes.map(scheme => `
-        <div class="scheme-result">
-            <h3>${scheme.name || 'Unnamed Scheme'}</h3>
-            <p>${scheme.description || 'No description available'}</p>
-            <p><strong>Eligibility:</strong> ${scheme.eligibility || 'Not specified'}</p>
-            ${scheme.applicationProcess ? `<p><strong>How to Apply:</strong> ${scheme.applicationProcess}</p>` : ''}
-        </div>
-    `).join('');
 }

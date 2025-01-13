@@ -36,9 +36,17 @@ limiter = Limiter(
     storage_uri="memory://"
 )
 
+# Configuration for Gemini API Key
+# IMPORTANT: Replace this with your actual Gemini API key
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
 # Configure Gemini API
 try:
-    genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+    if not GEMINI_API_KEY:
+        logger.error("Gemini API key is not set. Please set it in environment variables.")
+        raise ValueError("Gemini API key must be set")
+    
+    genai.configure(api_key=GEMINI_API_KEY)
 except Exception as e:
     logger.error(f"Failed to configure Gemini API: {e}")
 
@@ -156,21 +164,30 @@ def serve_static(filename):
 @app.route('/find-schemes', methods=['POST'])
 @daily_limit
 def find_schemes():
-    user_data = request.json
-    client_ip = request.remote_addr or request.headers.get('X-Forwarded-For', '127.0.0.1')
+    """
+    Endpoint to find government schemes based on user profile
+    """
+    try:
+        # Parse the incoming request body
+        user_data = request.json
+        logger.info(f"Received user data: {json.dumps(user_data, indent=2)}")
+    except Exception as e:
+        logger.error(f"Failed to parse request body: {e}")
+        return jsonify({
+            'error': 'Invalid request data',
+            'message': 'Could not parse the request data',
+            'details': str(e)
+        }), 400
     
     try:
-        # Log incoming user data (sanitize sensitive info)
-        sanitized_data = {k: '****' if k in ['aadhaarNumber', 'contactNumber'] else v 
-                          for k, v in user_data.items()}
-        logger.info(f"Received scheme request from {client_ip}: {sanitized_data}")
-
         # Use Gemini to generate scheme recommendations
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = generate_scheme_prompt(user_data)
         
         try:
+            logger.info(f"Sending prompt to Gemini: {prompt}")
             response = model.generate_content(prompt)
+            logger.info(f"Received Gemini response: {response.text}")
             
             # Try to parse the JSON response
             try:
@@ -199,10 +216,14 @@ def find_schemes():
         
         except Exception as gemini_error:
             logger.error(f"Gemini API error: {gemini_error}")
-            return jsonify(FALLBACK_SCHEMES), 500
+            return jsonify({
+                'error': 'Gemini API error',
+                'details': str(gemini_error),
+                'fallback_schemes': FALLBACK_SCHEMES
+            }), 500
     
     except Exception as e:
-        logger.error(f"Unexpected error in find_schemes: {e}")
+        logger.error(f"Unexpected error in find-schemes: {e}")
         return jsonify({
             'error': 'Could not fetch schemes',
             'details': str(e),
@@ -210,15 +231,9 @@ def find_schemes():
         }), 500
 
 if __name__ == '__main__':
-    print("Starting Flask application...")
-    print(f"Base directory: {BASE_DIR}")
-    try:
-        app.run(
-            host='0.0.0.0',  # Bind to all available network interfaces
-            port=5000, 
-            debug=True
-        )
-    except Exception as e:
-        print(f"Failed to start Flask application: {e}")
-        import traceback
-        traceback.print_exc()
+    # Ensure environment variables are set
+    if not os.getenv('GEMINI_API_KEY'):
+        logger.warning("GEMINI_API_KEY is not set. Please set it in .env file.")
+    
+    # Run the Flask app
+    app.run(debug=True, host='0.0.0.0', port=5000)

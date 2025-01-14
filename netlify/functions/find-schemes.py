@@ -70,6 +70,45 @@ FALLBACK_SCHEMES = [
     }
 ]
 
+# Predefined list of support types for Business & Entrepreneurship
+SUPPORT_TYPES = [
+    # Financial Support
+    "Financial Assistance",
+    "Loan Subsidy",
+    "Grant Funding",
+    "Venture Capital",
+    
+    # Training & Skill Development
+    "Business Training",
+    "Entrepreneurship Mentorship",
+    "Skill Development Program",
+    "Technical Training",
+    
+    # Infrastructure & Resources
+    "Workspace Provision",
+    "Equipment Support",
+    "Technology Access",
+    "Digital Infrastructure",
+    
+    # Marketing & Networking
+    "Market Linkage",
+    "Export Promotion",
+    "Networking Opportunities",
+    "Business Expo Support",
+    
+    # Regulatory & Compliance
+    "Legal Consultation",
+    "Compliance Guidance",
+    "Patent & IPR Support",
+    "Registration Assistance",
+    
+    # Social Impact
+    "Women Entrepreneur Support",
+    "Minority Business Support",
+    "Rural Entrepreneurship",
+    "Startup Ecosystem Support"
+]
+
 def generate_scheme_prompt(user_data):
     """Generate a comprehensive prompt for Gemini to find relevant government schemes."""
     language = user_data.get('language', 'en')
@@ -77,6 +116,19 @@ def generate_scheme_prompt(user_data):
     # Log the incoming user data for debugging
     logger.info(f"Generating prompt for language: {language}")
     logger.info(f"User Data: {json.dumps(user_data, indent=2)}")
+    
+    # Check if any business details are present
+    business_details = {
+        'businessStatus': user_data.get('businessStatus'),
+        'businessType': user_data.get('businessType'),
+        'investmentRange': user_data.get('investmentRange'),
+        'businessSector': user_data.get('businessSector'),
+        'previousExperience': user_data.get('previousExperience'),
+        'supportType': user_data.get('supportType', [])
+    }
+    
+    # Remove None or empty values
+    business_details = {k: v for k, v in business_details.items() if v}
     
     if language == 'hi':
         prompt = f"""
@@ -99,19 +151,22 @@ def generate_scheme_prompt(user_data):
         - राज्य: {user_data.get('state', 'निर्दिष्ट नहीं')}
         - जिला: {user_data.get('district', 'निर्दिष्ट नहीं')}
         
+        {f'''
         व्यवसाय और उद्यमिता विवरण:
-        - व्यवसाय की स्थिति: {user_data.get('businessStatus', 'निर्दिष्ट नहीं')}
-        - व्यवसाय का प्रकार: {user_data.get('businessType', 'निर्दिष्ट नहीं')}
-        - निवेश श्रेणी: {user_data.get('investmentRange', 'निर्दिष्ट नहीं')}
-        - व्यवसाय क्षेत्र: {user_data.get('businessSector', 'निर्दिष्ट नहीं')}
-        - पिछला अनुभव: {user_data.get('previousExperience', 'निर्दिष्ट नहीं')}
-        - आवश्यक समर्थन प्रकार: {', '.join(user_data.get('supportType', [])) or 'कोई नहीं'}
+        - व्यवसाय की स्थिति: {business_details.get('businessStatus', 'निर्दिष्ट नहीं')}
+        - व्यवसाय का प्रकार: {business_details.get('businessType', 'निर्दिष्ट नहीं')}
+        - निवेश श्रेणी: {business_details.get('investmentRange', 'निर्दिष्ट नहीं')}
+        - व्यवसाय क्षेत्र: {business_details.get('businessSector', 'निर्दिष्ट नहीं')}
+        - पिछला अनुभव: {business_details.get('previousExperience', 'निर्दिष्ट नहीं')}
+        - आवश्यक समर्थन प्रकार: {', '.join(business_details.get('supportType', [])) or 'कोई नहीं'}
+        ''' if business_details else ''}
         
         कृपया इस प्रोफ़ाइल के अनुरूप सरकारी योजनाओं की एक JSON सूची प्रदान करें। प्रत्येक योजना में शामिल होना चाहिए:
         - name: योजना का नाम
         - description: योजना का संक्षिप्त विवरण
         - eligibility: विशिष्ट पात्रता मानदंड
         - applicationProcess: योजना के लिए आवेदन कैसे करें
+        - businessRelevance: व्यवसाय के लिए प्रासंगिकता का स्तर (उच्च/मध्यम/निम्न)
         
         केवल एक वैध JSON सरणी लौटाएं। कोई अतिरिक्त पाठ या व्याख्या शामिल न करें।
         """
@@ -136,19 +191,22 @@ def generate_scheme_prompt(user_data):
         - State: {user_data.get('state', 'Not specified')}
         - District: {user_data.get('district', 'Not specified')}
         
+        {f'''
         Business & Entrepreneurship Details:
-        - Business Status: {user_data.get('businessStatus', 'Not specified')}
-        - Business Type: {user_data.get('businessType', 'Not specified')}
-        - Investment Range: {user_data.get('investmentRange', 'Not specified')}
-        - Business Sector: {user_data.get('businessSector', 'Not specified')}
-        - Previous Experience: {user_data.get('previousExperience', 'Not specified')}
-        - Support Types Required: {', '.join(user_data.get('supportType', [])) or 'None'}
+        - Business Status: {business_details.get('businessStatus', 'Not specified')}
+        - Business Type: {business_details.get('businessType', 'Not specified')}
+        - Investment Range: {business_details.get('investmentRange', 'Not specified')}
+        - Business Sector: {business_details.get('businessSector', 'Not specified')}
+        - Previous Experience: {business_details.get('previousExperience', 'Not specified')}
+        - Support Types Required: {', '.join(business_details.get('supportType', [])) or 'None'}
+        ''' if business_details else ''}
         
         Please provide a JSON list of government schemes that match this profile. Each scheme should include:
         - name: Scheme name
         - description: Brief description of the scheme
         - eligibility: Specific eligibility criteria
         - applicationProcess: How to apply for the scheme
+        - businessRelevance: Level of relevance for the business (high/medium/low)
         
         Return ONLY a valid JSON array. Do not include any additional text or explanation.
         """

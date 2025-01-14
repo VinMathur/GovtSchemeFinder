@@ -25,22 +25,22 @@ document.getElementById('schemeForm').addEventListener('submit', async (e) => {
         disabilityStatus: document.getElementById('disabilityStatus').value,
         educationLevel: document.getElementById('educationLevel').value,
         
-        // New Business & Entrepreneurship Fields
-        businessStatus: document.getElementById('businessStatus').value || null,
-        businessType: document.getElementById('businessType').value || null,
-        investmentRange: document.getElementById('investmentRange').value || null,
-        businessSector: document.getElementById('businessSector').value || null,
-        previousExperience: document.getElementById('previousExperience').value || null,
+        // Business & Entrepreneurship Fields (Optional)
+        businessStatus: document.getElementById('businessStatus')?.value || null,
+        businessType: document.getElementById('businessType')?.value || null,
+        investmentRange: document.getElementById('investmentRange')?.value || null,
+        businessSector: document.getElementById('businessSector')?.value || null,
+        previousExperience: document.getElementById('previousExperience')?.value || null,
         
-        // Collect multiple support types
-        supportType: Array.from(
-            document.querySelectorAll('input[name="supportType"]:checked')
-        ).map(el => el.value),
+        // Support Types (Dropdown)
+        supportType: document.getElementById('supportType')?.selectedOptions 
+            ? Array.from(document.getElementById('supportType').selectedOptions).map(option => option.value)
+            : [],
         
         language: document.getElementById('language-select').value
     };
 
-    // Validation
+    // Validation (modify to make business details optional)
     const errors = validateForm(formData);
     
     if (Object.keys(errors).length > 0) {
@@ -290,8 +290,7 @@ function validateForm(data) {
     const requiredDropdowns = [
         'employmentStatus', 'bplCardStatus', 
         'socialCategory', 'disabilityStatus', 
-        'educationLevel', 'language',
-        'businessStatus', 'businessType', 'investmentRange', 'businessSector', 'previousExperience'
+        'educationLevel', 'language'
     ];
 
     requiredDropdowns.forEach(field => {

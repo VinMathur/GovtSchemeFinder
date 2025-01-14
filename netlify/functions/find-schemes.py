@@ -1,4 +1,6 @@
-import json
+git add .
+git commit -m "Add comprehensive support types dropdown for business scheme recommendations"
+git pushimport json
 import os
 import logging
 import google.generativeai as genai

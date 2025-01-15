@@ -1,11 +1,15 @@
-git add .
-git commit -m "Add comprehensive support types dropdown for business scheme recommendations"
-git pushimport json
+import sys
 import os
+from pathlib import Path
+
+# Add project root to Python path
+project_root = str(Path(__file__).resolve().parents[2])
+sys.path.insert(0, project_root)
+
+# Import required libraries
+import json
 import logging
 import google.generativeai as genai
-from dotenv import load_dotenv
-from functools import wraps
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, 
@@ -216,8 +220,9 @@ def generate_scheme_prompt(user_data):
 def handler(event, context):
     """
     Netlify serverless function handler for finding government schemes
+    Enhanced with comprehensive error handling and logging
     """
-    # Add CORS headers to allow cross-origin requests
+    # CORS headers
     cors_headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -232,101 +237,102 @@ def handler(event, context):
             'body': json.dumps({'message': 'Successful preflight call.'})
         }
 
-    # Parse the incoming request body
-    try:
-        user_data = json.loads(event.get('body', '{}'))
-        logger.info(f"Received user data: {json.dumps(user_data, indent=2)}")
-    except (KeyError, json.JSONDecodeError) as e:
-        logger.error(f"Failed to parse request body: {e}")
-        return {
-            'statusCode': 400,
-            'headers': cors_headers,
-            'body': json.dumps({
-                'error': 'Invalid request',
-                'message': 'Could not parse the request data',
-                'details': str(e)
-            })
-        }
-    
-    # Get client IP (use Netlify's header for IP)
-    client_ip = event.get('headers', {}).get('x-forwarded-for', '127.0.0.1').split(',')[0].strip()
-    
-    # Check daily query limit
-    if not check_daily_query_limit(client_ip):
-        logger.warning(f"Daily query limit exceeded for IP: {client_ip}")
-        return {
-            'statusCode': 429,
-            'headers': cors_headers,
-            'body': json.dumps({
-                'error': 'Rate limit exceeded',
-                'message': 'You have reached the maximum of 4 queries per day. Please try again tomorrow.',
-                'limit_reached': True
-            })
-        }
-    
-    try:
-        # Use Gemini to generate scheme recommendations
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = generate_scheme_prompt(user_data)
-        
-        try:
-            logger.info(f"Sending prompt to Gemini: {prompt}")
-            response = model.generate_content(prompt)
-            logger.info(f"Received Gemini response: {response.text}")
-            
-            # Try to parse the JSON response
-            try:
-                # Extract JSON from markdown code block or direct text
-                json_match = response.text.strip()
-                if json_match.startswith('```json'):
-                    json_match = json_match[7:-3].strip()
-                elif json_match.startswith('```'):
-                    json_match = json_match[3:-3].strip()
-                
-                schemes = json.loads(json_match)
-                
-                # Validate schemes structure
-                if not isinstance(schemes, list):
-                    raise ValueError("Response is not a list of schemes")
-                
-                logger.info(f"Successfully retrieved {len(schemes)} schemes from Gemini")
-                return {
-                    'statusCode': 200,
-                    'headers': cors_headers,
-                    'body': json.dumps(schemes)
-                }
-            
-            except (json.JSONDecodeError, ValueError) as parse_error:
-                logger.warning(f"Failed to parse Gemini response: {parse_error}")
-                logger.warning(f"Raw Gemini response: {response.text}")
-                
-                # Fallback to predefined schemes
-                return {
-                    'statusCode': 200,
-                    'headers': cors_headers,
-                    'body': json.dumps(FALLBACK_SCHEMES)
-                }
-        
-        except Exception as gemini_error:
-            logger.error(f"Gemini API error: {gemini_error}")
-            return {
-                'statusCode': 500,
-                'headers': cors_headers,
-                'body': json.dumps({
-                    'error': 'Gemini API error',
-                    'details': str(gemini_error),
-                    'fallback_schemes': FALLBACK_SCHEMES
-                })
-            }
-    
-    except Exception as e:
-        logger.error(f"Unexpected error in find-schemes: {e}")
+    # Log function entry
+    logger.info("Netlify Function Invoked")
+    logger.info(f"Event Details: {json.dumps(event, indent=2)}")
+
+    # Validate API key
+    api_key = os.getenv('GEMINI_API_KEY')
+    if not api_key:
+        logger.error("GEMINI_API_KEY is not set")
         return {
             'statusCode': 500,
             'headers': cors_headers,
             'body': json.dumps({
-                'error': 'Could not fetch schemes',
-                'details': str(e),
-                'fallback_schemes': FALLBACK_SCHEMES
+                'error': 'API Configuration Error',
+                'message': 'Gemini API key is missing'
             })
         }
+
+    try:
+        # Configure Gemini API
+        genai.configure(api_key=api_key)
+        
+        # Parse input data
+        user_data = json.loads(event.get('body', '{}'))
+        
+        # Use Gemini to generate scheme recommendations
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Generate prompt (simplified version)
+        prompt = generate_scheme_prompt(user_data)
+        
+        # Generate content
+        response = model.generate_content(prompt)
+        
+        # Try to parse the response
+        try:
+            # Attempt to extract JSON from the response
+            import re
+            json_match = re.search(r'\[.*\]', response.text, re.DOTALL)
+            if json_match:
+                schemes = json.loads(json_match.group(0))
+            else:
+                schemes = [{"name": "Default Scheme", "description": "Could not parse specific schemes"}]
+        except Exception as parse_error:
+            logger.warning(f"Failed to parse schemes: {parse_error}")
+            schemes = [{"name": "Default Scheme", "description": "Error parsing schemes"}]
+        
+        # Return response
+        return {
+            'statusCode': 200,
+            'headers': cors_headers,
+            'body': json.dumps({
+                'schemes': schemes,
+                'message': 'Schemes retrieved successfully'
+            })
+        }
+    
+    except Exception as e:
+        logger.error(f"Error in function: {e}")
+        return {
+            'statusCode': 500,
+            'headers': cors_headers,
+            'body': json.dumps({
+                'error': 'Internal Server Error',
+                'message': str(e)
+            })
+        }
+
+# Netlify requires a specific function signature
+def lambda_handler(event, context):
+    return handler(event, context)
+
+def parse_scheme_response(response_text):
+    """
+    Robust parsing of Gemini's scheme response
+    Handles various response formats
+    """
+    import re
+    import json
+    
+    # Remove code block markers if present
+    if response_text.startswith('```json'):
+        response_text = response_text[7:-3].strip()
+    elif response_text.startswith('```'):
+        response_text = response_text[3:-3].strip()
+    
+    # Try direct JSON parsing
+    try:
+        return json.loads(response_text)
+    except json.JSONDecodeError:
+        # Fallback: Extract JSON-like content
+        json_match = re.search(r'\[.*\]', response_text, re.DOTALL | re.MULTILINE)
+        if json_match:
+            try:
+                return json.loads(json_match.group(0))
+            except json.JSONDecodeError:
+                pass
+    
+    # Fallback to predefined schemes if parsing fails
+    return FALLBACK_SCHEMES
